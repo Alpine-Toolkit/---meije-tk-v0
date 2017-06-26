@@ -28,6 +28,8 @@
 
 #include "refuge_schema.h"
 
+#include<QtDebug>
+
 /**************************************************************************************************/
 
 void
@@ -41,12 +43,20 @@ Refuge::post_init()
 bool
 Refuge::operator<(const Refuge & other) const
 {
-  return m_short_name < other.m_short_name;
+  // qInfo() << m_short_name << other.m_short_name;
+
+  // Fixme: segfault
+  // return m_short_name.localeAwareCompare(other.m_short_name);
+
+  auto a = m_short_name.normalized(QString::NormalizationForm_D);
+  auto b = other.m_short_name.normalized(QString::NormalizationForm_D);
+  return a < b;
 }
 
 void
 Refuge::set_first_letter()
 {
+  // Fixme: to function
   m_first_letter = m_short_name.normalized(QString::NormalizationForm_D)[0].toUpper();
   // m_short_name[0].toUpper();
 }
